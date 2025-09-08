@@ -1,16 +1,18 @@
 var express = require('express');
 var router = express.Router();
 
-// Route GET sur /
-router.get('/', function(req, res) {
-  res.type('text/plain');
-  res.send('Server Express - Bienvenue sur mon application Express');
+const userRoute = require('../routes/users');
+
+router.get('/', async (req, res) => {
+  res.status(200).json({
+    name: process.env.APP_NAME || 'Port de Plaisance API',
+    version: '1.0.0',
+    status: 200,
+    message: 'Bienvenue sur l’API !'
+  });
 });
 
-// Route GET sur /about
-router.get('/about', function(req, res) {
-  res.type('text/plain');
-  res.send('Je suis une application Express basique');
-});
+// délégation des routes /users
+router.use('/users', userRoute);
 
 module.exports = router;
