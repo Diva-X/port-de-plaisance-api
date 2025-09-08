@@ -9,7 +9,7 @@ var cors = require('cors');
 require('./db/mongoose');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// var usersRouter = require('./routes/users'); // supprimé
 
 var app = express();
 
@@ -26,9 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
+// Routes principales
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter); // supprimé
 
 // Middleware 404
 app.use(function(req, res, next) {
