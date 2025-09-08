@@ -39,3 +39,8 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  res.type('text/plain');
+  res.status(404).send('404 - Page non trouvée');
+});
