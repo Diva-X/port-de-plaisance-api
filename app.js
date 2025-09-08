@@ -3,14 +3,18 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
-// Initialise la connexion MongoDB (charge .env, se connecte)
+// Connexion MongoDB
 require('./db/mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+// Autoriser toutes les requêtes cross-origin
+app.use(cors({ origin: '*' }));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,20 +26,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// 404 → on crée l'erreur et on passe au handler
-app.use(function (req, res, next) {
-  next(createError(404));
+// Middleware 404
+app.use(function(req, res, next) {
+  res.status(404).json({ error: 'Ressource non trouvée' });
 });
 
-// Gestionnaire d'erreurs (500, 404, etc.)
-app.use(function (err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
+// Middleware de gestion des erreurs
+app.use(function(err, req, res, next) {
+  console.error(err);
+  res.status(err.status || 500).json({ error: err.message });
 });
 
 module.exports = app;
