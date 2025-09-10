@@ -1,10 +1,12 @@
+// routes/users.js
 var express = require('express');
 var router = express.Router();
-const User = require('../models/user');
+const userService = require('../services/users');
 
-// Création d’un user
-// PUT /users/add  (selon le cours)
-// Body: email, password, name
+/**
+ * Création d’un user
+ * PUT /users/add
+ */
 router.put('/add', async (req, res, next) => {
   try {
     const { email, password, name } = req.body;
@@ -12,51 +14,54 @@ router.put('/add', async (req, res, next) => {
       return res.status(400).json({ error: 'email et password sont requis' });
     }
 
-    const exists = await User.findOne({ email });
-    if (exists) {
-      return res.status(409).json({ error: 'email déjà utilisé' });
-    }
-
-    const user = await User.create({ email, password, name });
+    const user = await userService.createUser({ email, password, name });
     res.status(201).json({ message: 'Utilisateur créé', id: user._id });
   } catch (e) {
+    if (e.message === 'EMAIL_EXISTS') {
+      return res.status(409).json({ error: 'email déjà utilisé' });
+    }
     next(e);
   }
 });
 
-// Lire un user par ID
+/**
+ * Lecture d’un user par id
+ * GET /users/:id
+ */
 router.get('/:id', async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id).select('-password'); // ne pas renvoyer le hash
-    if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' });
-    res.json(user);
+    const u = await userService.getUserById(req.params.id);
+    if (!u) return res.status(404).json({ error: 'Utilisateur introuvable' });
+    res.json(u);
   } catch (e) {
     next(e);
   }
 });
 
-// Mise à jour d’un user
-// PATCH /users/:id
+/**
+ * Mise à jour partielle
+ * PATCH /users/:id
+ */
 router.patch('/:id', async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' });
-
-    if (req.body.name) user.name = req.body.name;
-    if (req.body.password) user.password = req.body.password; // sera re-hashé par pre('save')
-
-    await user.save();
+    const user = await userService.updateUser(req.params.id, req.body);
     res.json({ message: 'Utilisateur mis à jour' });
   } catch (e) {
+    if (e.message === 'NOT_FOUND') {
+      return res.status(404).json({ error: 'Utilisateur introuvable' });
+    }
     next(e);
   }
 });
 
-// Suppression d’un user
+/**
+ * Suppression
+ * DELETE /users/:id
+ */
 router.delete('/:id', async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' });
+    const u = await userService.deleteUser(req.params.id);
+    if (!u) return res.status(404).json({ error: 'Utilisateur introuvable' });
     res.status(204).send();
   } catch (e) {
     next(e);
