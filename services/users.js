@@ -1,4 +1,5 @@
 // services/users.js
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 /**
@@ -36,9 +37,21 @@ async function deleteUser(id) {
   return await User.findByIdAndDelete(id);
 }
 
+/**
+ * Authentifie un utilisateur (login)
+ */
+async function authenticateUser(email, password) {
+  const user = await User.findOne({ email });
+  if (!user) throw new Error('INVALID_CREDENTIALS');
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) throw new Error('INVALID_CREDENTIALS');
+  return user;
+}
+
 module.exports = {
   createUser,
   getUserById,
   updateUser,
   deleteUser,
+  authenticateUser
 };
