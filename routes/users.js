@@ -4,6 +4,28 @@ var router = express.Router();
 const userService = require('../services/users');
 
 /**
+ * Authentification
+ * POST /users/authenticate
+ */
+router.post('/authenticate', async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'email et password sont requis' });
+    }
+
+    const user = await userService.authenticateUser(email, password);
+    req.session.userId = user._id.toString(); // persistance dans la session
+    res.json({ message: 'Authentifié', userId: user._id });
+  } catch (e) {
+    if (e.message === 'INVALID_CREDENTIALS') {
+      return res.status(401).json({ error: 'identifiants invalides' });
+    }
+    next(e);
+  }
+});
+
+/**
  * Création d’un user
  * PUT /users/add
  */
