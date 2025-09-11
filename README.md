@@ -81,3 +81,6 @@ curl -i -b cookies.txt http://localhost:3000/users/<ID>
 curl -i -X POST http://localhost:3000/reservations \
   -H "Content-Type: application/json" \
   -d '{"catwayNumber":3,"clientName":"Alice","boatName":"Boat","startDate":"2025-09-12","endDate":"2025-09-20"}'
+
+Note de fin : Je n’ai pas utilisé method-override car mon API REST fonctionne avec des clients capables d’envoyer directement PUT, PATCH et DELETE (ex. Postman, curl).
+
