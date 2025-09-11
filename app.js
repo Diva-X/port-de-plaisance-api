@@ -52,9 +52,21 @@ app.use(function(req, res, next) {
 });
 
 // Middleware de gestion des erreurs
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   console.error(err);
-  res.status(err.status || 500).json({ error: err.message });
+
+  // Validation Mongoose → 400
+  if (err.name === 'ValidationError') {
+    return res.status(400).json({ error: err.message });
+  }
+
+  // ObjectId invalide → 400
+  if (err.name === 'CastError') {
+    return res.status(400).json({ error: `Paramètre invalide: ${err.path}` });
+  }
+
+  // Par défaut
+  res.status(err.status || 500).json({ error: err.message || 'Erreur serveur' });
 });
 
 module.exports = app;
