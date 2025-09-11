@@ -163,3 +163,5 @@ Après authentification via l’endpoint POST /users/authenticate, le serveur re
 
 
 Je n’ai pas utilisé method-override car mon API REST fonctionne avec des clients capables d’envoyer directement PUT, PATCH et DELETE (ex. Postman, curl). Cet outil est surtout utile pour les formulaires HTML, donc inutile dans ce projet.
+<img width="451" height="696" alt="image" src="https://github.com/user-attachments/assets/160d444b-1777-44f7-8a5a-2baa94cbfe43" />
+
