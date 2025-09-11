@@ -1,9 +1,8 @@
 // controllers/usersController.js
+const jwt = require('jsonwebtoken');
 const userService = require('../services/users');
 
-/**
- * Crée un utilisateur
- */
+// Crée un utilisateur
 async function createUser(req, res, next) {
   try {
     const { email, password, name } = req.body;
@@ -20,25 +19,40 @@ async function createUser(req, res, next) {
   }
 }
 
-/**
- * Récupère un utilisateur par son ID
- */
+// Authentifie un utilisateur (JWT)
+async function authenticateUser(req, res, next) {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'email et password sont requis' });
+    }
+    const user = await userService.authenticateUser(email, password);
+    const token = jwt.sign({}, process.env.JWT_SECRET, {
+      subject: user._id.toString(),
+      expiresIn: '7d'
+    });
+    res.json({ message: 'Authentifié', userId: user._id, token });
+  } catch (e) {
+    if (e.message === 'INVALID_CREDENTIALS') {
+      return res.status(401).json({ error: 'identifiants invalides' });
+    }
+    next(e);
+  }
+}
+
+// Récupère un utilisateur par ID
 async function getUserById(req, res, next) {
   try {
     const u = await userService.getUserById(req.params.id);
     if (!u) return res.status(404).json({ error: 'Utilisateur introuvable' });
     res.json(u);
-  } catch (e) {
-    next(e);
-  }
+  } catch (e) { next(e); }
 }
 
-/**
- * Met à jour un utilisateur
- */
+// Met à jour un utilisateur
 async function updateUser(req, res, next) {
   try {
-    const user = await userService.updateUser(req.params.id, req.body);
+    await userService.updateUser(req.params.id, req.body);
     res.json({ message: 'Utilisateur mis à jour' });
   } catch (e) {
     if (e.message === 'NOT_FOUND') {
@@ -48,43 +62,19 @@ async function updateUser(req, res, next) {
   }
 }
 
-/**
- * Supprime un utilisateur
- */
+// Supprime un utilisateur
 async function deleteUser(req, res, next) {
   try {
     const u = await userService.deleteUser(req.params.id);
     if (!u) return res.status(404).json({ error: 'Utilisateur introuvable' });
     res.status(204).send();
-  } catch (e) {
-    next(e);
-  }
-}
-
-/**
- * Authentifie un utilisateur
- */
-async function authenticateUser(req, res, next) {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ error: 'email et password sont requis' });
-    }
-    const user = await userService.authenticateUser(email, password);
-    req.session.userId = user._id.toString();
-    res.json({ message: 'Authentifié', userId: user._id });
-  } catch (e) {
-    if (e.message === 'INVALID_CREDENTIALS') {
-      return res.status(401).json({ error: 'identifiants invalides' });
-    }
-    next(e);
-  }
+  } catch (e) { next(e); }
 }
 
 module.exports = {
   createUser,
+  authenticateUser,
   getUserById,
   updateUser,
-  deleteUser,
-  authenticateUser
+  deleteUser
 };
