@@ -29,4 +29,7 @@ const reservationSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+// Ajoute un index pour optimiser la détection des chevauchements
+reservationSchema.index({ catwayNumber: 1, startDate: 1, endDate: 1 });
+
 module.exports = mongoose.model('Reservation', reservationSchema);
