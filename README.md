@@ -11,22 +11,21 @@ Fonctionnalités principales
 	•	Architecture en couches (routes, services, controllers, middlewares, models)
 	•	Tests de performance avec Autocannon et analyse avec Clinic.js
 	•	Déploiement sur Render
-
+ 
 Prérequis
 	•	Node.js version 18 ou supérieure
 	•	Un cluster MongoDB Atlas
 
 Installation
 Cloner le projet et installer les dépendances :
-
 git clone https://github.com/Diva-X/port-de-plaisance-api.git
 cd port-de-plaisance-api
 npm install
 
 Configuration
 Créer un fichier .env à la racine du projet en vous basant sur le fichier fourni .env.example.
-Exemple de configuration :
 
+Exemple de configuration :
 NODE_ENV=development
 DEBUG=app:*
 MONGODB_URI=votre_url_mongodb
@@ -59,28 +58,48 @@ Réservations
 	•	PATCH /reservations/:id : mettre à jour une réservation
 	•	DELETE /reservations/:id : supprimer une réservation
 
-Déploiement
+⸻
 
-L’API est déployée sur Render.
+Déploiement
+L’API est déployée sur Render :
+https://port-de-plaisance-api-s6k5.onrender.com
+
 Un endpoint de santé est disponible à l’adresse /health pour vérifier l’état du service.
 
-Création d’un utilisateur
+⸻
+
+Exemples de commandes curl
+
+Création d’un utilisateur :
 curl -i -X PUT http://localhost:3000/users/add \
   -H "Content-Type: application/json" \
   -d '{"email":"bob@example.com","password":"Bob12345!","name":"Bob"}'
 
-Authentification
-curl -i -c cookies.txt -X POST http://localhost:3000/users/authenticate \
+  Authentification :
+  curl -i -c cookies.txt -X POST http://localhost:3000/users/authenticate \
   -H "Content-Type: application/json" \
   -d '{"email":"bob@example.com","password":"Bob12345!"}'
 
-Récupération d’un utilisateur (auth requise)
-curl -i -b cookies.txt http://localhost:3000/users/<ID>
+  Récupération d’un utilisateur (auth requise) :
+  curl -i -b cookies.txt http://localhost:3000/users/<ID>
 
-Création d’une réservation
+  Création d’une réservation :
 curl -i -X POST http://localhost:3000/reservations \
   -H "Content-Type: application/json" \
   -d '{"catwayNumber":3,"clientName":"Alice","boatName":"Boat","startDate":"2025-09-12","endDate":"2025-09-20"}'
 
-Note de fin : Je n’ai pas utilisé method-override car mon API REST fonctionne avec des clients capables d’envoyer directement PUT, PATCH et DELETE (ex. Postman, curl).
+  Compte de démonstration
 
+Un compte est déjà créé afin de faciliter les tests de l’API :
+	•	Email : prof@test.com
+	•	Mot de passe : ProfTest123!
+
+Après authentification via l’endpoint POST /users/authenticate, le serveur retournera un cookie jwt (HttpOnly, Secure, SameSite=Strict) permettant d’accéder aux routes protégées comme :
+	•	GET /users/:id
+	•	PATCH /users/:id
+	•	DELETE /users/:id
+
+⸻
+
+Note
+Je n’ai pas utilisé method-override car mon API REST fonctionne avec des clients capables d’envoyer directement PUT, PATCH et DELETE (ex. Postman, curl). Cet outil est surtout utile pour les formulaires HTML, donc inutile dans ce projet.
