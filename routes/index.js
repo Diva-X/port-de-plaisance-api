@@ -14,6 +14,9 @@ router.get('/', async (req, res) => {
     message: 'Bienvenue sur l\\’API !'
   });
 });
+router.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
 router.use('/users', userRoute);
 router.use('/reservations', reservationsRoute);
