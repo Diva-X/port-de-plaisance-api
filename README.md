@@ -95,14 +95,6 @@ https://port-de-plaisance-api-s6k5.onrender.com
 
 Un endpoint de santé est disponible à l’adresse `/health` pour vérifier l’état du service.
 
----
-
-## Compte de démonstration
-
-Un compte est déjà créé afin de faciliter les tests de l’API :
-
-- Email : prof@test.com  
-- Mot de passe : ProfTest123!  
 
 Après authentification via l’endpoint `POST /users/authenticate`, le serveur retournera un cookie jwt (HttpOnly, Secure, SameSite=Strict) permettant d’accéder aux routes protégées comme :
 
