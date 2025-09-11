@@ -108,22 +108,12 @@ Lancement
 
 
 
-Mode développement :
+Mode développement : npm run dev
 
 
 
 
-npm run dev
-
-
-
-
-Mode production :
-
-
-
-
-npm start
+Mode production : npm start
 
 
 
