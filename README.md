@@ -57,6 +57,13 @@ Réservations
 	•	PATCH /reservations/:id : mettre à jour une réservation
 	•	DELETE /reservations/:id : supprimer une réservation
 
+ Documentation et pages dynamiques
+	•	Documentation OpenAPI : l’API est documentée avec Swagger-UI et disponible à l’adresse :
+ /docs
+ 	•	Pages dynamiques avec EJS :
+	•	/ → page d’accueil simple avec titre.
+	•	/reservations/view → page dynamique listant toutes les réservations sous forme de tableau.
+
 Déploiement
 L’API est déployée sur Render :
 https://port-de-plaisance-api-s6k5.onrender.com
