@@ -1,4 +1,3 @@
-// routes/index.js
 const express = require('express');
 const router = express.Router();
 
@@ -11,5 +10,10 @@ router.get('/', (req, res) => {
 
 router.use('/reservations', reservationsRoute);
 router.use('/users', usersRoute); // si présent
+
+// Healthcheck pour Render
+router.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
 module.exports = router;
