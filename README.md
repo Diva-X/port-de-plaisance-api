@@ -63,3 +63,21 @@ Déploiement
 
 L’API est déployée sur Render.
 Un endpoint de santé est disponible à l’adresse /health pour vérifier l’état du service.
+
+# Création d’un utilisateur
+curl -i -X PUT http://localhost:3000/users/add \
+  -H "Content-Type: application/json" \
+  -d '{"email":"bob@example.com","password":"Bob12345!","name":"Bob"}'
+
+# Authentification
+curl -i -c cookies.txt -X POST http://localhost:3000/users/authenticate \
+  -H "Content-Type: application/json" \
+  -d '{"email":"bob@example.com","password":"Bob12345!"}'
+
+# Récupération d’un utilisateur (auth requise)
+curl -i -b cookies.txt http://localhost:3000/users/<ID>
+
+# Création d’une réservation
+curl -i -X POST http://localhost:3000/reservations \
+  -H "Content-Type: application/json" \
+  -d '{"catwayNumber":3,"clientName":"Alice","boatName":"Boat","startDate":"2025-09-12","endDate":"2025-09-20"}'
