@@ -27,6 +27,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const openapi = YAML.load(path.join(__dirname, 'openapi.yaml'));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));
+
 // Sessions
 app.set('trust proxy', 1);
 app.use(session({

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <style>
+      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #ddd; padding: 8px; }
+      th { background: #f5f5f5; text-align: left; }
+      h1 { margin-bottom: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <% if (reservations && reservations.length) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Catway</th>
+            <th>Client</th>
+            <th>Bateau</th>
+            <th>Début</th>
+            <th>Fin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% reservations.forEach(r => { %>
+            <tr>
+              <td><%= r.catwayNumber %></td>
+              <td><%= r.clientName %></td>
+              <td><%= r.boatName %></td>
+              <td><%= new Date(r.startDate).toLocaleDateString('fr-FR') %></td>
+              <td><%= new Date(r.endDate).toLocaleDateString('fr-FR') %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>Aucune réservation pour le moment.</p>
+    <% } %>
+  </body>
+</html>

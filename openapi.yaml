@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Port de Plaisance API
+  version: "1.0"
+servers:
+  - url: https://port-de-plaisance-api-s6k5.onrender.com
+  - url: http://localhost:3000
+paths:
+  /users/add:
+    put:
+      summary: Créer un utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                name: { type: string }
+      responses:
+        "201": { description: Créé }
+        "409": { description: Email déjà utilisé }
+  /users/authenticate:
+    post:
+      summary: Authentifier un utilisateur (cookie JWT HttpOnly)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        "200": { description: OK (cookie jwt renvoyé) }
+        "401": { description: Identifiants invalides }
+  /users/{id}:
+    get:
+      summary: Obtenir un utilisateur (protégé par cookie JWT)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+        "401": { description: Non authentifié }
+        "404": { description: Introuvable }
+    patch:
+      summary: Mettre à jour un utilisateur (protégé)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Mis à jour }
+        "401": { description: Non authentifié }
+        "404": { description: Introuvable }
+    delete:
+      summary: Supprimer un utilisateur (protégé)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Supprimé }
+        "401": { description: Non authentifié }
+        "404": { description: Introuvable }
+  /reservations:
+    get:
+      summary: Lister les réservations
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Créer une réservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [catwayNumber, clientName, boatName, startDate, endDate]
+              properties:
+                catwayNumber: { type: integer }
+                clientName: { type: string }
+                boatName: { type: string }
+                startDate: { type: string, format: date }
+                endDate: { type: string, format: date }
+      responses:
+        "201": { description: Créé }
+        "400": { description: Validation Mongoose (dates) }
+        "409": { description: Chevauchement détecté }
+  /reservations/{id}:
+    get:
+      summary: Obtenir une réservation par id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: OK }
+        "404": { description: Introuvable }
+    patch:
+      summary: Mettre à jour une réservation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Mis à jour }
+        "409": { description: Chevauchement détecté }
+    delete:
+      summary: Supprimer une réservation
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Supprimé }
