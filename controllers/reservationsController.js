@@ -1,24 +1,35 @@
 // controllers/reservationsController.js
-const reservationService = require('../services/reservations');
+const service = require('../services/reservations');
+
+/**
+ * GET /reservations/view
+ * Rend la liste des réservations en EJS.
+ */
+async function viewAll(req, res, next) {
+  try {
+    const data = await service.listReservations();
+    res.render('reservations', { title: 'Réservations', reservations: data });
+  } catch (e) { next(e); }
+}
 
 /**
  * GET /reservations
- * Liste toutes les réservations
+ * Retourne la liste en JSON.
  */
 async function list(req, res, next) {
   try {
-    const reservations = await reservationService.listReservations();
+    const reservations = await service.listReservations();
     res.json(reservations);
   } catch (e) { next(e); }
 }
 
 /**
  * GET /reservations/:id
- * Récupère une réservation par ID
+ * Retourne une réservation par ID.
  */
 async function getById(req, res, next) {
   try {
-    const r = await reservationService.getReservationById(req.params.id);
+    const r = await service.getReservationById(req.params.id);
     if (!r) return res.status(404).json({ error: 'Réservation introuvable' });
     res.json(r);
   } catch (e) { next(e); }
@@ -26,7 +37,7 @@ async function getById(req, res, next) {
 
 /**
  * POST /reservations
- * Crée une réservation
+ * Crée une réservation.
  */
 async function create(req, res, next) {
   try {
@@ -34,7 +45,7 @@ async function create(req, res, next) {
     if (!catwayNumber || !clientName || !boatName || !startDate || !endDate) {
       return res.status(400).json({ error: 'champs requis manquants' });
     }
-    const r = await reservationService.createReservation({ catwayNumber, clientName, boatName, startDate, endDate });
+    const r = await service.createReservation({ catwayNumber, clientName, boatName, startDate, endDate });
     res.status(201).json({ id: r._id });
   } catch (e) {
     if (e.status === 409) return res.status(409).json({ error: 'chevauchement détecté' });
@@ -44,11 +55,11 @@ async function create(req, res, next) {
 
 /**
  * PATCH /reservations/:id
- * Met à jour une réservation
+ * Met à jour une réservation.
  */
 async function update(req, res, next) {
   try {
-    const r = await reservationService.updateReservation(req.params.id, req.body);
+    const r = await service.updateReservation(req.params.id, req.body);
     if (!r) return res.status(404).json({ error: 'Réservation introuvable' });
     res.json({ message: 'Réservation mise à jour' });
   } catch (e) {
@@ -59,14 +70,14 @@ async function update(req, res, next) {
 
 /**
  * DELETE /reservations/:id
- * Supprime une réservation
+ * Supprime une réservation.
  */
 async function remove(req, res, next) {
   try {
-    const r = await reservationService.deleteReservation(req.params.id);
+    const r = await service.deleteReservation(req.params.id);
     if (!r) return res.status(404).json({ error: 'Réservation introuvable' });
     res.status(204).send();
   } catch (e) { next(e); }
 }
 
-module.exports = { list, getById, create, update, remove };
+module.exports = { viewAll, list, getById, create, update, remove };

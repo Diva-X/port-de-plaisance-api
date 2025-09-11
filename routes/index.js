@@ -1,9 +1,15 @@
 // routes/index.js
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-router.get('/', function(req, res) {
+const reservationsRoute = require('./reservations');
+const usersRoute = require('./users'); // si présent
+
+router.get('/', (req, res) => {
   res.render('index', { title: 'Port de Plaisance API' });
 });
+
+router.use('/reservations', reservationsRoute);
+router.use('/users', usersRoute); // si présent
 
 module.exports = router;
