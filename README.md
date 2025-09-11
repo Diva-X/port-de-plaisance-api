@@ -38,68 +38,28 @@ Prérequis
 	•	Un cluster MongoDB Atlas
 
 
-Installation
-
-
-
+## Installation
 
 Cloner le projet et installer les dépendances :
 
-
-
-
+```bash
 git clone https://github.com/Diva-X/port-de-plaisance-api.git
-
-
-
-
 cd port-de-plaisance-api
-
-
-
-
 npm install
-
 
 
 
 Configuration
 
-
-
-
 Créer un fichier .env à la racine du projet en vous basant sur le fichier fourni .env.example.
-
-
-
 
 Exemple de configuration :
 
-
-
-
 NODE_ENV=development
-
-
-
-
 DEBUG=app:*
-
-
-
-
 MONGODB_URI=votre_url_mongodb
-
-
-
-
 SESSION_SECRET=une_chaine_secrete_pour_les_sessions
-
-
-
-
 JWT_SECRET=une_chaine_secrete_pour_les_jwt
-
 
 
 
