@@ -38,7 +38,7 @@ Prérequis
 	•	Un cluster MongoDB Atlas
 
 
-## Installation
+Installation
 
 Cloner le projet et installer les dépendances :
 
