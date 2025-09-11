@@ -8,7 +8,7 @@ const requireJwt = require('../middlewares/authJwt');
 router.put('/add', controller.createUser);
 router.post('/authenticate', controller.authenticateUser);
 
-// Protégées par JWT
+// Protégées (lecture/modif/suppression)
 router.get('/:id', requireJwt, controller.getUserById);
 router.patch('/:id', requireJwt, controller.updateUser);
 router.delete('/:id', requireJwt, controller.deleteUser);
