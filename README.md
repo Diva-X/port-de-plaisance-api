@@ -33,6 +33,8 @@ git clone https://github.com/Diva-X/port-de-plaisance-api.git
 cd port-de-plaisance-api
 npm install
 
+---
+
 ## Configuration
 
 Créer un fichier `.env` à la racine du projet en vous basant sur le fichier fourni `.env.example`.
