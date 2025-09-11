@@ -3,7 +3,10 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 /**
- * Crée un nouvel utilisateur
+ * Crée un nouvel utilisateur.
+ * @param {{email:string, password:string, name?:string}} input
+ * @returns {Promise<import("../models/user")>} Utilisateur créé
+ * @throws {Error} EMAIL_EXISTS si l'email est déjà utilisé
  */
 async function createUser({ email, password, name }) {
   const exists = await User.findOne({ email });
@@ -13,14 +16,20 @@ async function createUser({ email, password, name }) {
 }
 
 /**
- * Récupère un utilisateur par son ID
+ * Retourne un utilisateur par son identifiant.
+ * @param {string} id
+ * @returns {Promise<import("../models/user")|null>}
  */
 async function getUserById(id) {
   return await User.findById(id).select('-password');
 }
 
 /**
- * Met à jour un utilisateur
+ * Met à jour partiellement un utilisateur.
+ * @param {string} id
+ * @param {{email?:string, password?:string, name?:string}} updates
+ * @returns {Promise<import("../models/user")>} Utilisateur mis à jour
+ * @throws {Error} NOT_FOUND si l'utilisateur n'existe pas
  */
 async function updateUser(id, updates) {
   const user = await User.findById(id);
@@ -31,14 +40,20 @@ async function updateUser(id, updates) {
 }
 
 /**
- * Supprime un utilisateur
+ * Supprime un utilisateur.
+ * @param {string} id
+ * @returns {Promise<import("../models/user")|null>}
  */
 async function deleteUser(id) {
   return await User.findByIdAndDelete(id);
 }
 
 /**
- * Authentifie un utilisateur (login)
+ * Authentifie un utilisateur (login).
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<import("../models/user")>}
+ * @throws {Error} INVALID_CREDENTIALS si email/mot de passe invalide
  */
 async function authenticateUser(email, password) {
   const user = await User.findOne({ email });
