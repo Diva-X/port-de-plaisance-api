@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "env-cmd -f ./env/.env.prod node ./bin/www",
-    "dev": "env-cmd -f ./env/.env.dev nodemon ./bin/www",
-    "seed": "env-cmd -f ./env/.env.dev node scripts/seed.js"
-  },
+  "start": "node ./bin/www",
+  "dev": "env-cmd -f ./env/.env.dev nodemon ./bin/www",
+  "seed": "env-cmd -f ./env/.env.dev node scripts/seed.js"
+},
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "~1.4.4",
