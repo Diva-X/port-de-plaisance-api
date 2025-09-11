@@ -33,7 +33,6 @@ SESSION_SECRET=une_chaine_secrete_pour_les_sessions
 JWT_SECRET=une_chaine_secrete_pour_les_jwt
 
 Lancement
-
 Mode développement :
 npm run dev
 
@@ -58,38 +57,13 @@ Réservations
 	•	PATCH /reservations/:id : mettre à jour une réservation
 	•	DELETE /reservations/:id : supprimer une réservation
 
-⸻
-
 Déploiement
 L’API est déployée sur Render :
 https://port-de-plaisance-api-s6k5.onrender.com
 
 Un endpoint de santé est disponible à l’adresse /health pour vérifier l’état du service.
 
-⸻
-
-Exemples de commandes curl
-
-Création d’un utilisateur :
-curl -i -X PUT http://localhost:3000/users/add \
-  -H "Content-Type: application/json" \
-  -d '{"email":"bob@example.com","password":"Bob12345!","name":"Bob"}'
-
-  Authentification :
-  curl -i -c cookies.txt -X POST http://localhost:3000/users/authenticate \
-  -H "Content-Type: application/json" \
-  -d '{"email":"bob@example.com","password":"Bob12345!"}'
-
-  Récupération d’un utilisateur (auth requise) :
-  curl -i -b cookies.txt http://localhost:3000/users/<ID>
-
-  Création d’une réservation :
-curl -i -X POST http://localhost:3000/reservations \
-  -H "Content-Type: application/json" \
-  -d '{"catwayNumber":3,"clientName":"Alice","boatName":"Boat","startDate":"2025-09-12","endDate":"2025-09-20"}'
-
-  Compte de démonstration
-
+Compte de démonstration
 Un compte est déjà créé afin de faciliter les tests de l’API :
 	•	Email : prof@test.com
 	•	Mot de passe : ProfTest123!
@@ -98,8 +72,6 @@ Après authentification via l’endpoint POST /users/authenticate, le serveur re
 	•	GET /users/:id
 	•	PATCH /users/:id
 	•	DELETE /users/:id
-
-⸻
-
+ 
 Note
 Je n’ai pas utilisé method-override car mon API REST fonctionne avec des clients capables d’envoyer directement PUT, PATCH et DELETE (ex. Postman, curl). Cet outil est surtout utile pour les formulaires HTML, donc inutile dans ce projet.
