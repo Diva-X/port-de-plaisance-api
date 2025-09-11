@@ -2,8 +2,12 @@
 const service = require('../services/reservations');
 
 /**
- * GET /reservations/view
- * Rend la liste des réservations en EJS.
+ * Rend la liste des réservations dans une vue EJS.
+ * @route GET /reservations/view
+ * @param {express.Request} req - Requête HTTP
+ * @param {express.Response} res - Retourne une page HTML générée
+ * @param {express.NextFunction} next - Middleware suivant en cas d’erreur
+ * @returns {Promise<void>}
  */
 async function viewAll(req, res, next) {
   try {
@@ -13,8 +17,12 @@ async function viewAll(req, res, next) {
 }
 
 /**
- * GET /reservations
- * Retourne la liste en JSON.
+ * Liste toutes les réservations (format JSON).
+ * @route GET /reservations
+ * @param {express.Request} req - Requête HTTP
+ * @param {express.Response} res - Retourne un tableau de réservations
+ * @param {express.NextFunction} next - Middleware suivant en cas d’erreur
+ * @returns {Promise<void>}
  */
 async function list(req, res, next) {
   try {
@@ -24,8 +32,12 @@ async function list(req, res, next) {
 }
 
 /**
- * GET /reservations/:id
- * Retourne une réservation par ID.
+ * Récupère une réservation par ID.
+ * @route GET /reservations/:id
+ * @param {express.Request} req - Contient l’ID dans req.params.id
+ * @param {express.Response} res - Retourne une réservation
+ * @param {express.NextFunction} next - Middleware suivant en cas d’erreur
+ * @returns {Promise<void>}
  */
 async function getById(req, res, next) {
   try {
@@ -36,8 +48,12 @@ async function getById(req, res, next) {
 }
 
 /**
- * POST /reservations
  * Crée une réservation.
+ * @route POST /reservations
+ * @param {express.Request} req - Body: { catwayNumber, clientName, boatName, startDate, endDate }
+ * @param {express.Response} res - Retourne { id }
+ * @param {express.NextFunction} next - Middleware suivant en cas d’erreur
+ * @returns {Promise<void>}
  */
 async function create(req, res, next) {
   try {
@@ -54,8 +70,12 @@ async function create(req, res, next) {
 }
 
 /**
- * PATCH /reservations/:id
  * Met à jour une réservation.
+ * @route PATCH /reservations/:id
+ * @param {express.Request} req - Contient l’ID dans req.params.id et les champs à modifier dans req.body
+ * @param {express.Response} res - Retourne { message }
+ * @param {express.NextFunction} next - Middleware suivant en cas d’erreur
+ * @returns {Promise<void>}
  */
 async function update(req, res, next) {
   try {
@@ -69,8 +89,12 @@ async function update(req, res, next) {
 }
 
 /**
- * DELETE /reservations/:id
  * Supprime une réservation.
+ * @route DELETE /reservations/:id
+ * @param {express.Request} req - Contient l’ID dans req.params.id
+ * @param {express.Response} res - Retourne 204 No Content
+ * @param {express.NextFunction} next - Middleware suivant en cas d’erreur
+ * @returns {Promise<void>}
  */
 async function remove(req, res, next) {
   try {
