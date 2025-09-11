@@ -4,32 +4,37 @@ const User = require('../models/user');
 
 /**
  * Crée un nouvel utilisateur.
- * @param {{email:string, password:string, name?:string}} input
- * @returns {Promise<import("../models/user")>} Utilisateur créé
- * @throws {Error} EMAIL_EXISTS si l'email est déjà utilisé
+ * @async
+ * @param {Object} input - Données de l’utilisateur
+ * @param {string} input.email - Email unique de l’utilisateur
+ * @param {string} input.password - Mot de passe en clair (sera hashé par le modèle)
+ * @param {string} input.name - Nom complet
+ * @throws {Error} EMAIL_EXISTS - Si l’email est déjà utilisé
+ * @returns {Promise<Object>} L’utilisateur créé
  */
 async function createUser({ email, password, name }) {
   const exists = await User.findOne({ email });
   if (exists) throw new Error('EMAIL_EXISTS');
-  const user = await User.create({ email, password, name });
-  return user;
+  return await User.create({ email, password, name });
 }
 
 /**
- * Retourne un utilisateur par son identifiant.
- * @param {string} id
- * @returns {Promise<import("../models/user")|null>}
+ * Récupère un utilisateur par son ID (sans le mot de passe).
+ * @async
+ * @param {string} id - ID MongoDB de l’utilisateur
+ * @returns {Promise<Object|null>} L’utilisateur trouvé ou null
  */
 async function getUserById(id) {
   return await User.findById(id).select('-password');
 }
 
 /**
- * Met à jour partiellement un utilisateur.
- * @param {string} id
- * @param {{email?:string, password?:string, name?:string}} updates
- * @returns {Promise<import("../models/user")>} Utilisateur mis à jour
- * @throws {Error} NOT_FOUND si l'utilisateur n'existe pas
+ * Met à jour un utilisateur existant.
+ * @async
+ * @param {string} id - ID MongoDB de l’utilisateur
+ * @param {Object} updates - Champs à mettre à jour
+ * @throws {Error} NOT_FOUND - Si l’utilisateur n’existe pas
+ * @returns {Promise<Object>} L’utilisateur mis à jour
  */
 async function updateUser(id, updates) {
   const user = await User.findById(id);
@@ -41,19 +46,21 @@ async function updateUser(id, updates) {
 
 /**
  * Supprime un utilisateur.
- * @param {string} id
- * @returns {Promise<import("../models/user")|null>}
+ * @async
+ * @param {string} id - ID MongoDB de l’utilisateur
+ * @returns {Promise<Object|null>} L’utilisateur supprimé ou null
  */
 async function deleteUser(id) {
   return await User.findByIdAndDelete(id);
 }
 
 /**
- * Authentifie un utilisateur (login).
- * @param {string} email
- * @param {string} password
- * @returns {Promise<import("../models/user")>}
- * @throws {Error} INVALID_CREDENTIALS si email/mot de passe invalide
+ * Authentifie un utilisateur avec email + mot de passe.
+ * @async
+ * @param {string} email - Email de connexion
+ * @param {string} password - Mot de passe en clair
+ * @throws {Error} INVALID_CREDENTIALS - Si l’email ou le mot de passe est invalide
+ * @returns {Promise<Object>} L’utilisateur authentifié
  */
 async function authenticateUser(email, password) {
   const user = await User.findOne({ email });
