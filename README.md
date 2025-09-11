@@ -1,11 +1,11 @@
-Port de Plaisance API
+## Port de Plaisance API
 
 
 Cette API RESTful a été développée avec Node.js, Express et MongoDB Atlas.
 Elle permet la gestion des utilisateurs et des réservations de catways dans un port de plaisance.
 
 
-Fonctionnalités principales
+## Fonctionnalités principales
 
 
 	•	CRUD complet sur les utilisateurs
@@ -29,7 +29,7 @@ Fonctionnalités principales
 	•	Déploiement sur Render
 
  
-Prérequis
+## Prérequis
 
 
 	•	Node.js version 18 ou supérieure
@@ -38,7 +38,7 @@ Prérequis
 	•	Un cluster MongoDB Atlas
 
 
-Installation
+## Installation
 
 Cloner le projet et installer les dépendances :
 
@@ -49,7 +49,7 @@ npm install
 
 
 
-Configuration
+## Configuration
 
 Créer un fichier .env à la racine du projet en vous basant sur le fichier fourni .env.example.
 
@@ -63,7 +63,7 @@ JWT_SECRET=une_chaine_secrete_pour_les_jwt
 
 
 
-Lancement
+## Lancement
 
 
 
@@ -83,7 +83,7 @@ L’API est alors accessible sur http://localhost:3000.
 
 
 
-Endpoints principaux
+## Endpoints principaux
 
 
 
@@ -139,7 +139,7 @@ Réservations
 	•	/reservations/view → page dynamique listant toutes les réservations sous forme de tableau.
  
 
-Déploiement
+##  Déploiement
 
 
 L’API est déployée sur Render :
@@ -175,7 +175,7 @@ Après authentification via l’endpoint POST /users/authenticate, le serveur re
 	•	DELETE /users/:id
  
  
-Note
+##  Note
 
 
 Je n’ai pas utilisé method-override car mon API REST fonctionne avec des clients capables d’envoyer directement PUT, PATCH et DELETE (ex. Postman, curl). Cet outil est surtout utile pour les formulaires HTML, donc inutile dans ce projet.
