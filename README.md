@@ -65,29 +65,14 @@ JWT_SECRET=une_chaine_secrete_pour_les_jwt
 
 ## Lancement
 
-
-
-
 Mode développement : npm run dev
 
-
-
-
 Mode production : npm start
-
-
-
 
 L’API est alors accessible sur http://localhost:3000.
 
 
-
-
 ## Endpoints principaux
-
-
-
-
 Utilisateurs
 
 
@@ -140,7 +125,6 @@ Réservations
  
 
 ##  Déploiement
-
 
 L’API est déployée sur Render :
 
